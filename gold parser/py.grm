@@ -1,0 +1,52 @@
+"Start Symbol" = <program>
+               
+!-----------Terminal-------------
+Id = [_]*{letter}{Alphanumeric}*
+Digit = ('+'|'-'){digit}+ ('.'{digit})? ('e'|('-'|'+'){digit}+ '^' ('+'|'-'){digit}+('.'{digit}+))?
+!-----------Rules----------------
+<program> ::= '{' <stmt_list> '}'
+
+<stmt_list> ::= <stmt>
+              | <stmt> <stmt_list> 
+
+<stmt> ::= <assign>
+         | <if_stmt>
+         | <for_stmt>
+
+<assign> ::= <id> '=' <expr> 
+
+<id> ::= Id
+<digit> ::= Digit
+
+<expr> ::= <term>
+         | <expr> '+' <term>
+         | <expr> '-' <term>
+
+<term> ::= <factor>
+         | <term> '*' <factor>
+         | <term> '/' <factor>
+         | <term> '%' <factor>
+
+<factor> ::= <id>
+           | <digit>
+           | '(' <expr> ')'
+           | <factor> '**' <factor>
+
+!---------------if statment--------------
+
+<if_stmt> ::= 'if' '(' <cond> ')'  '{' <stmt_list> '}'
+            | 'if' '(' <cond> ')'  '{' <stmt_list> '}' 'elif' '(' <cond> ')'  '{' <stmt_list> '}'
+            | 'if' '(' <cond> ')'  '{' <stmt_list> '}' 'else'  '{' <stmt_list> '}'
+
+<cond> ::= <expr> <op> <expr>
+
+<op> ::= '<' | '>' | '==' | '!='
+          
+!---------------For statment--------------
+<for_stmt> ::= 'for' <id> 'in' <iterable> ':' <stmt_list>
+
+<iterable> ::= <range>
+             | <id>
+
+<range> ::= 'range' '(' <expr> ',' <expr> ')'
+
